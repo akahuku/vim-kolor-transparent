@@ -58,7 +58,19 @@
 " --------------------------------------------------------------------------
 " This color scheme is dedicated to the the Ugandan children (How about
 " donating to them? see Vim's website).
-
+"
+" --------------------------------------------------------------------------
+" DESCRIPTION OF THIS FORKED VERSION
+" --------------------------------------------------------------------------
+" Author: akahuku <akahuku@gmail.com>
+" Version: 1.0.0
+" URL: https://github.com/akahuku/vim-kolor-transparent
+" License: MIT
+"
+" This file contains the following changes to the original vim-kolor:
+"   - Disables the background color of some elements by g:kolor_transparent_bg.
+"   - Applies italic style for Comment, Constant, String on terminal.
+"   - Underlined the cursor line.
 
 highlight clear
 set background=dark
@@ -82,6 +94,9 @@ if !exists("g:kolor_alternative_matchparen")
 endif
 if !exists("g:kolor_inverted_matchparen")
   let g:kolor_inverted_matchparen=0
+endif
+if !exists("g:kolor_transparent_bg")
+  let g:kolor_transparent_bg=1
 endif
 
 highlight Normal          guifg=#c6c6c6    guibg=#2e2d2b    gui=none
@@ -117,7 +132,7 @@ highlight TabLine         guifg=#808080    guibg=#242322    gui=none
 highlight TablineSel      guifg=#000000    guibg=#9e9e9e    gui=none
 highlight TablineFill     guifg=#808080    guibg=#242322    gui=none
 highlight CursorColumn    guifg=NONE       guibg=#383734    gui=none
-highlight CursorLine      guifg=NONE       guibg=#383734    gui=none
+highlight CursorLine      guifg=NONE       guibg=#383734    gui=underline
 highlight ColorColumn     guifg=NONE       guibg=#383734    gui=none
 highlight Cursor          guifg=#000000    guibg=#e2e2e2    gui=none
 highlight lCursor         guifg=#000000    guibg=#e2e2e2    gui=none
@@ -187,12 +202,24 @@ else
 endif
 
 if &t_Co > 255
-  highlight Normal          ctermfg=251     ctermbg=235     cterm=none
+  if g:kolor_transparent_bg==0
+    highlight Normal          ctermfg=251     ctermbg=235     cterm=none
+  else
+    highlight Normal          ctermfg=251     ctermbg=none    cterm=none
+  endif
   highlight SpecialKey      ctermfg=111     ctermbg=none    cterm=none
-  highlight NonText         ctermfg=111     ctermbg=235     cterm=none
+  if g:kolor_transparent_bg==0
+    highlight NonText         ctermfg=111     ctermbg=235     cterm=none
+  else
+    highlight NonText         ctermfg=111     ctermbg=none    cterm=none
+  endif
   highlight Directory       ctermfg=180     ctermbg=none    cterm=none
   highlight IncSearch       ctermfg=0       ctermbg=206     cterm=none
-  highlight LineNr          ctermfg=244     ctermbg=234     cterm=none
+  if g:kolor_transparent_bg==0
+    highlight LineNr          ctermfg=244     ctermbg=234     cterm=none
+  else
+    highlight LineNr          ctermfg=244     ctermbg=none    cterm=none
+  endif
   highlight StatusLine      ctermfg=0       ctermbg=247     cterm=none
   highlight StatusLineNC    ctermfg=247     ctermbg=238     cterm=none
   highlight VertSplit       ctermfg=238     ctermbg=238     cterm=none
@@ -218,16 +245,18 @@ if &t_Co > 255
   highlight TabLine         ctermfg=244     ctermbg=234     cterm=none
   highlight TablineSel      ctermfg=0       ctermbg=247     cterm=none
   highlight TablineFill     ctermfg=244     ctermbg=234     cterm=none
-  highlight CursorColumn    ctermfg=none    ctermbg=236     cterm=none
-  highlight CursorLine      ctermfg=none    ctermbg=236     cterm=none
+  if g:kolor_transparent_bg==0
+    highlight CursorColumn    ctermfg=none    ctermbg=236     cterm=none
+    highlight CursorLine      ctermfg=none    ctermbg=236     cterm=none
+  else
+    highlight CursorColumn    ctermfg=none    ctermbg=none    cterm=none
+    highlight CursorLine      ctermfg=none    ctermbg=none    cterm=underline
+  endif
   highlight ColorColumn     ctermfg=none    ctermbg=236     cterm=none
   highlight Cursor          ctermfg=0       ctermbg=254     cterm=none
-  highlight Comment         ctermfg=244     ctermbg=none    cterm=none
-  highlight Constant        ctermfg=180     ctermbg=none    cterm=none
   highlight Special         ctermfg=176     ctermbg=none    cterm=none
   highlight Identifier      ctermfg=80      ctermbg=none    cterm=none
   highlight PreProc         ctermfg=186     ctermbg=none    cterm=none
-  highlight String          ctermfg=138     ctermbg=none    cterm=none
   highlight Number          ctermfg=186     ctermbg=none    cterm=none
   highlight Function        ctermfg=114     ctermbg=none    cterm=none
   highlight htmlEndTag      ctermfg=114     ctermbg=none    cterm=none
@@ -274,6 +303,15 @@ if &t_Co > 255
     else
       highlight MatchParen      ctermfg=255     ctermbg=198     cterm=bold
     endif
+  endif
+  if g:kolor_italic==0
+    highlight Comment         ctermfg=244     ctermbg=none    cterm=none
+    highlight Constant        ctermfg=180     ctermbg=none    cterm=none
+    highlight String          ctermfg=138     ctermbg=none    cterm=none
+  else
+    highlight Comment         ctermfg=244     ctermbg=none    cterm=italic
+    highlight Constant        ctermfg=180     ctermbg=none    cterm=italic
+    highlight String          ctermfg=138     ctermbg=none    cterm=italic
   endif
   if g:kolor_underlined==0
     highlight Underlined      ctermfg=111     ctermbg=none    cterm=none
